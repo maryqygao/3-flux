@@ -8,6 +8,14 @@ class TodoStore extends EventEmitter {
     { id: 34617435, text: 'Learn React', complete: false }
   ];
 
+  createTodo(text) {
+    const id = Date.now();
+
+    this.todos.push({ id, text, complete: false });
+
+    this.emit('change');
+  }
+
   getAll() {
     return this.todos;
   }
