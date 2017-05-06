@@ -4,12 +4,22 @@ import TodoStore from '../stores/TodoStore';
 import * as TodoActions from '../actions/TodoActions';
 
 export default class Todos extends React.Component {
-  state = { todos: TodoStore.getAll() };
+  state = {
+    todos: TodoStore.getAll(),
+    loading: false
+  };
 
   componentWillMount() {
     TodoStore.on('change', () => {
       this.setState({
-        todos: TodoStore.getAll()
+        todos: TodoStore.getAll(),
+        loading: false
+      });
+    });
+
+    TodoStore.on('fetch', () => {
+      this.setState({
+        loading: true
       });
     });
   }
@@ -37,6 +47,7 @@ export default class Todos extends React.Component {
     return (
       <div>
         <h1>Todos</h1>
+        {this.state.loading ? <i className="fa fa-spin fa-refresh" /> : null}
         <button
           className="btn btn-primary btn-block"
           onClick={this.reloadTodos}

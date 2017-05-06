@@ -19,6 +19,9 @@ class TodoStore extends EventEmitter {
     },
     RELOAD_TODOS: action => {
       this.reloadTodos(action.data);
+    },
+    FETCH_TODOS: action => {
+      this.fetchTodos();
     }
   };
 
@@ -44,6 +47,10 @@ class TodoStore extends EventEmitter {
   reloadTodos(data) {
     this.todos = data;
     this.emit('change');
+  }
+
+  fetchTodos() {
+    this.emit('fetch');
   }
 
   getAll() {
