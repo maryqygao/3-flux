@@ -17,11 +17,14 @@ class TodoStore extends EventEmitter {
     DELETE_TODO: action => {
       this.deleteTodo(action.id);
     },
-    RELOAD_TODOS: action => {
-      this.reloadTodos(action.data);
-    },
     FETCH_TODOS: action => {
       this.fetchTodos();
+    },
+    RECEIVE_TODOS: action => {
+      this.receiveTodos(action.response);
+    },
+    FETCH_TODOS_ERROR: action => {
+      this.fetchTodosError(action.error);
     }
   };
 
@@ -44,13 +47,17 @@ class TodoStore extends EventEmitter {
     this.emit('change');
   }
 
-  reloadTodos(data) {
-    this.todos = data;
+  fetchTodos() {
+    this.emit('fetch');
+  }
+
+  receiveTodos(response) {
+    this.todos = response.data;
     this.emit('change');
   }
 
-  fetchTodos() {
-    this.emit('fetch');
+  fetchTodosError(error) {
+    this.emit('fetchError');
   }
 
   getAll() {

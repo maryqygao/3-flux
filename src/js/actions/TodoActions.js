@@ -11,7 +11,12 @@ export function deleteTodo(id) {
 
 export function reloadTodos() {
   dispatcher.dispatch({ type: 'FETCH_TODOS' });
-  axios.get('http://localhost:3000/todos').then(response => {
-    dispatcher.dispatch({ type: 'RELOAD_TODOS', data: response.data });
-  });
+  axios
+    .get('http://localhost:3000/todos')
+    .then(response => {
+      dispatcher.dispatch({ type: 'RECEIVE_TODOS', response: response });
+    })
+    .catch(error => {
+      dispatcher.dispatch({ type: 'FETCH_TODOS_ERROR', error: error });
+    });
 }
