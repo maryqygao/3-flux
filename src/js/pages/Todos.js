@@ -10,27 +10,37 @@ export default class Todos extends React.Component {
     error: false
   };
 
-  componentWillMount() {
-    TodoStore.on('change', () => {
+  listeners = {
+    change: () => {
       this.setState({
         todos: TodoStore.getAll(),
         loading: false,
         error: false
       });
-    });
-
-    TodoStore.on('fetch', () => {
+    },
+    fetch: () => {
       this.setState({
         loading: true
       });
-    });
-
-    TodoStore.on('fetchError', () => {
+    },
+    fetchError: () => {
       this.setState({
         loading: false,
         error: true
       });
-    });
+    }
+  };
+
+  componentWillMount() {
+    Object.entries(this.listeners).forEach(([eventName, listener]) =>
+      TodoStore.on(eventName, listener)
+    );
+  }
+
+  componentWillUnmount() {
+    Object.entries(this.listeners).forEach(([eventName, listener]) =>
+      TodoStore.removeListener(eventName, listener)
+    );
   }
 
   inputId = 'todoInput';
