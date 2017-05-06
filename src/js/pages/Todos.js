@@ -28,11 +28,21 @@ export default class Todos extends React.Component {
     TodoActions.deleteTodo(id);
   };
 
+  reloadTodos = () => {
+    TodoActions.reloadTodos();
+  };
+
   render() {
     const { todos } = this.state;
     return (
       <div>
         <h1>Todos</h1>
+        <button
+          className="btn btn-primary btn-block"
+          onClick={this.reloadTodos}
+        >
+          Reload
+        </button>
         <div className="input-group">
           <input
             className="form-control"

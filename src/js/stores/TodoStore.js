@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 
@@ -15,6 +16,9 @@ class TodoStore extends EventEmitter {
     },
     DELETE_TODO: action => {
       this.deleteTodo(action.id);
+    },
+    RELOAD_TODOS: action => {
+      this.reloadTodos(action.data);
     }
   };
 
@@ -34,6 +38,11 @@ class TodoStore extends EventEmitter {
 
   deleteTodo(id) {
     this.todos = this.todos.filter(todo => todo.id !== id);
+    this.emit('change');
+  }
+
+  reloadTodos(data) {
+    this.todos = data;
     this.emit('change');
   }
 
