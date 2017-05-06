@@ -12,6 +12,9 @@ class TodoStore extends EventEmitter {
   actionHandlers = {
     CREATE_TODO: action => {
       this.createTodo(action.text);
+    },
+    DELETE_TODO: action => {
+      this.deleteTodo(action.id);
     }
   };
 
@@ -25,9 +28,12 @@ class TodoStore extends EventEmitter {
 
   createTodo(text) {
     const id = Date.now();
-
     this.todos.push({ id, text, complete: false });
+    this.emit('change');
+  }
 
+  deleteTodo(id) {
+    this.todos = this.todos.filter(todo => todo.id !== id);
     this.emit('change');
   }
 

@@ -24,6 +24,10 @@ export default class Todos extends React.Component {
     }
   };
 
+  deleteTodo = id => {
+    TodoActions.deleteTodo(id);
+  };
+
   render() {
     const { todos } = this.state;
     return (
@@ -43,7 +47,9 @@ export default class Todos extends React.Component {
           </span>
         </div>
         <ul>
-          {todos.map(todo => <Todo key={todo.id} {...todo} />)}
+          {todos.map(todo => (
+            <Todo key={todo.id} {...todo} deleteOnClick={this.deleteTodo} />
+          ))}
         </ul>
       </div>
     );
