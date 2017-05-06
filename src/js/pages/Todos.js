@@ -14,9 +14,14 @@ export default class Todos extends React.Component {
     });
   }
 
+  inputId = 'todoInput';
+  inputPlaceholder = 'Enter New Todo';
+
   createTodo = () => {
-    const input = document.querySelector('#todoInput');
-    TodoActions.createTodo(input.value);
+    const input = document.querySelector(`#${this.inputId}`);
+    if (input.value.length > 0) {
+      TodoActions.createTodo(input.value);
+    }
   };
 
   render() {
@@ -24,8 +29,19 @@ export default class Todos extends React.Component {
     return (
       <div>
         <h1>Todos</h1>
-        <button onClick={this.createTodo}>Add Todo</button>
-        <input id="todoInput" />
+        <div className="input-group">
+          <input
+            className="form-control"
+            type="text"
+            id={this.inputId}
+            placeholder={this.inputPlaceholder}
+          />
+          <span className="input-group-btn">
+            <button className="btn btn-primary" onClick={this.createTodo}>
+              Add Todo
+            </button>
+          </span>
+        </div>
         <ul>
           {todos.map(todo => <Todo key={todo.id} {...todo} />)}
         </ul>
