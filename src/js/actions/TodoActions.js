@@ -17,6 +17,16 @@ export function reloadTodos() {
       dispatcher.dispatch({ type: 'RECEIVE_TODOS', response: response });
     })
     .catch(error => {
-      dispatcher.dispatch({ type: 'FETCH_TODOS_ERROR', error: error });
+      let e;
+      if (error.response) {
+        const { status, statusText } = error.response;
+        e = `${status}, ${statusText}`;
+      } else if (error.request) {
+        e = error.request;
+        console.log(e);
+      } else {
+        e = error.message;
+      }
+      dispatcher.dispatch({ type: 'FETCH_TODOS_ERROR', error: e });
     });
 }

@@ -7,28 +7,7 @@ export default class Todos extends React.Component {
   state = {
     todos: TodoStore.getAll(),
     loading: false,
-    error: false
-  };
-
-  listeners = {
-    change: () => {
-      this.setState({
-        todos: TodoStore.getAll(),
-        loading: false,
-        error: false
-      });
-    },
-    fetch: () => {
-      this.setState({
-        loading: true
-      });
-    },
-    fetchError: () => {
-      this.setState({
-        loading: false,
-        error: true
-      });
-    }
+    error: null
   };
 
   componentWillMount() {
@@ -42,6 +21,28 @@ export default class Todos extends React.Component {
       TodoStore.removeListener(eventName, listener)
     );
   }
+
+  listeners = {
+    change: () => {
+      this.setState({
+        todos: TodoStore.getAll(),
+        loading: false,
+        error: null
+      });
+    },
+    fetch: () => {
+      this.setState({
+        loading: true,
+        error: null
+      });
+    },
+    fetchError: error => {
+      this.setState({
+        loading: false,
+        error
+      });
+    }
+  };
 
   inputId = 'todoInput';
   inputPlaceholder = 'Enter New Todo';
@@ -62,12 +63,14 @@ export default class Todos extends React.Component {
   };
 
   render() {
-    const { todos } = this.state;
+    const { todos, loading, error } = this.state;
     return (
       <div>
         <h1>Todos</h1>
-        {this.state.loading ? <i className="fa fa-spin fa-refresh" /> : null}
-        {this.state.error ? <i className="fa fa-exclamation-triangle" /> : null}
+        {loading ? <i className="fa fa-spin fa-refresh" /> : null}
+        {error
+          ? <div><i className="fa fa-exclamation-triangle" />{error}</div>
+          : null}
         <button
           className="btn btn-primary btn-block"
           onClick={this.reloadTodos}

@@ -57,7 +57,7 @@ class TodoStore extends EventEmitter {
   }
 
   fetchTodosError(error) {
-    this.emit('fetchError');
+    this.emit('fetchError', error);
   }
 
   getAll() {
